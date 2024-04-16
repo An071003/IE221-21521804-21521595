@@ -19,7 +19,7 @@ Trường Đại học Công nghệ Thông tin - UIT
 		+ insult  
 		+ identity_hate  
 −	Mô tả tập tin csv: tập tin mà bọn em sẽ cung cấp để huấn luyện mô hình học máy train.csv (tập huấn luyện chứa các bình luận có nhãn nhị phân)  
-link:[https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data]
+link: https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data
 
 # Các Thư viện sử dụng:  
 - Thư viện python:
