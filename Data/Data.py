@@ -1,12 +1,13 @@
-import Library.Library_struct as lb
+import Library.Library as lb
 
 
 class Data:
-    def __init__(self, path):
-        self.df = lb.pd.DataFrame(lb.pd.read_csv(path))
+    def __init__(self, train):
+        self.df = lb.pd.DataFrame(lb.pd.read_csv(train))
         self.target_columns = list(lb.np.array(self.df.columns)[2:])
         self.analysis_columns = []
         self.nlp = lb.spacy.load('en_core_web_lg')
+        self.vectorizer = []
         self.train = []
         self.test = []
         self.val = []
@@ -21,14 +22,14 @@ class Data:
         self.df.loc[(self.df['toxicity_type_defined'] == 1) & (self.df['toxic'] == 0), 'soft_toxic'] = 1
         self.analysis_columns = self.target_columns + ['non-toxic', 'toxic_undefined', 'soft_toxic']
 
-    def Visualisation_analysis(self):
+    def Visualisation_Analysis(self):
         # Trực quan hóa dữ liệu đã được phân tích
         label_counts = self.df[self.analysis_columns].sum()
 
         lb.plt.figure(figsize=(20, 10))
         ax = lb.sns.barplot(x=label_counts.index, y=label_counts.values,
-                            palette='Set3')  # Set3 is an example of a color palette
-        ax.set_yscale('log')
+                            palette='Set3')
+        ax.set_yscale("log")
         ax.tick_params(labelsize=15)
         lb.plt.xlabel('Label', fontsize=15)
         lb.plt.ylabel('Count', fontsize=15)
@@ -69,9 +70,9 @@ class Data:
 
     def preprocess(self):
         # Vector hóa dữ liệu văn bản
-        vt = lb.Vectorize()
-        vt.Vectorizer_adapt(self.df['comment_text'])
-        vectorized_text = vt.Vectorizer(self.df['comment_text'])
+        vectorizer = lb.Vectorize()
+        vectorizer.Vectorizer_adapt(self.df['comment_text'])
+        vectorized_text = vectorizer.Vectorizer(self.df['comment_text'])
 
         # Tạo dữ liệu từ vectorized_text và các dữ liệu của target_columns
         dataset = lb.tf.data.Dataset.from_tensor_slices((vectorized_text, self.df[self.target_columns]))
