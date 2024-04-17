@@ -4,8 +4,8 @@ Trường Đại học Công nghệ Thông tin - UIT
 Đồ án môn kỹ thuật lập trình Python - IE221.O23.CNCL  
 
 
-**#Hồ Vũ An - 21521804**
-  **#Nguyễn Thành Trung - 21521595**
+**#Hồ Vũ An - 21521804**  
+**#Nguyễn Thành Trung - 21521595**
 
 # Giới thiệu:  
 Đồ án này nghiên cứu các thư viện liên quan đến học máy và ngôn ngữ tự nhiên và áp dụng chúng để tạo ra một ứng dụng desktop có thể cho phép người dùng nhập vào một đoạn bình luận, đưa ra kết quả dư đoán của mô hình học máy là bình luận tiêu cực hoặc không tiêu cực.  
