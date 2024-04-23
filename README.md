@@ -26,7 +26,7 @@ link: https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/dat
 - Thư viện python:
 ```python
   !pip install tensorflow 
-  !pip install tensorflow-gpu 
+  !pip install tensorflow-intel
   !pip install keras 
   !pip install pandas 
   !pip install seaborn 
