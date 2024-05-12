@@ -1,13 +1,16 @@
 # Import Library
 import Library.Library as Lb
 
+
 class Data:
     """
         Class Data
     """
-
     def __init__(self, train):
-        # khởi tạo tham số cho Data
+        """
+        Khởi tạo giá trị của Class
+        :param train: đường dẫn tới dữ liệu
+        """
         self.df = Lb.pd.DataFrame(Lb.pd.read_csv(train))
         self.target_columns = list(Lb.np.array(self.df.columns)[2:])
         self.analysis_columns = []
@@ -18,7 +21,9 @@ class Data:
         self.val = []
 
     def analysis_sample(self):
-        # Thêm một số nhãn cho mục đích phân tích
+        """
+        Hàm thêm một số nhãn cho mục đích phân tích
+        """
         self.df['non-toxic'] = 1 - self.df[self.target_columns].max(axis=1)
         self.df['toxicity_type_defined'] = self.df[['insult', 'obscene', 'identity_hate', 'threat']].max(axis=1)
         self.df['toxic_undefined'] = 0
@@ -28,7 +33,9 @@ class Data:
         self.analysis_columns = self.target_columns + ['non-toxic', 'toxic_undefined', 'soft_toxic']
 
     def visualisation_analysis(self):
-        # Trực quan hóa dữ liệu đã được phân tích
+        """
+        Hàm trực quan hóa dữ liệu đã được phân tích
+        """
         label_counts = self.df[self.analysis_columns].sum()
 
         Lb.plt.figure(figsize=(20, 10))
@@ -42,7 +49,9 @@ class Data:
         Lb.plt.show()
 
     def correlations_between_labels(self):
-        # Hàm Trực quan hóa các liên kết giữa các labels
+        """
+        Hàm Trực quan hóa các liên kết giữa các labels
+        """
         heatmap_data = self.df[self.target_columns]
         Lb.plt.figure(figsize=(10, 10))
         ax = Lb.sns.heatmap(heatmap_data.corr(), cmap='coolwarm', annot=True)
@@ -50,7 +59,9 @@ class Data:
         Lb.plt.show()
 
     def get_nonstop_token(self):
-        # Hàm Lấy các token không có stop word bên trong
+        """
+        Hàm Lấy các token không có stop word bên trong
+        """
         nonstop_tokens = []
         for doc in self.nlp.pipe(self.df['comment_text'].astype('unicode').values, batch_size=50):
             if doc.has_annotation("DEP"):
@@ -60,7 +71,9 @@ class Data:
         self.df['nonstop_tokens'] = nonstop_tokens
 
     def most_common_toxic_words(self):
-        # Hàm Trực quan hóa những từ thường gặp trong các bình luận xúc phạm
+        """
+        Hàm Trực quan hóa những từ thường gặp trong các bình luận xúc phạm
+        """
         for label in self.target_columns:
             word_list = list(self.df.loc[self.df[label] == 1, 'nonstop_tokens'].explode())
             most_common = Lb.Counter(word_list).most_common(20)
@@ -74,11 +87,15 @@ class Data:
             Lb.plt.show()
 
     def preprocess(self):
-        # Hàm tiền xử lý dữ liệu
+        """
+        Hàm tiền xử lý dữ liệu
+        """
         # Vector hóa dữ liệu văn bản
         self.vectorizer = Lb.Vectorize()
         self.vectorizer.vectorizer_adapt(self.df['comment_text'].values)
-        vectorized_text = self.vectorizer.call(self.df['comment_text'].values)
+        vectorized_text = self.vectorizer(self.df['comment_text'].values)
+
+        self.vectorizer.save_vocabulary('../Save_model/vectorizer.pkl')
 
         # Tạo dữ liệu từ vectorized_text và dữ liệu target
         dataset = Lb.tf.data.Dataset.from_tensor_slices((vectorized_text, self.df[self.target_columns].values))
@@ -91,4 +108,3 @@ class Data:
         self.train = dataset.take(int(len(dataset) * .7))
         self.val = dataset.skip(int(len(dataset) * .7)).take(int(len(dataset) * .2))
         self.test = dataset.skip(int(len(dataset) * .9)).take(int(len(dataset) * .1))
-
