@@ -1,31 +1,25 @@
-# Import thư viện
-import Data.Data as Dt
+# import thư viện
+import Library.Library as Lb
 import Model.Model as Md
+import App_desktop.App_desktop as Ap
 
-check = Dt.Data('./jigsaw-toxic-comment-classification-challenge/train.csv/train.csv')
+if __name__ == '__main__':
+    # Tải mô hình
+    model = Md.MyModel()
+    model.build(input_share=(None, 1800))
+    model.load_weights('./Saved_model/model.weights.h5')
 
-check.analysis_sample()
+    # Cài đặt lớp vector hóa từ vocabulary đã lưu
+    with open('./Saved_model/vectorizer.pkl', 'rb') as f:
+        vocabulary = Lb.pkl.load(f)
 
-check.visualisation_analysis()
+    vectorizer = Lb.Vectorize(vocabulary=vocabulary)
 
-check.correlations_between_labels()
+    # Các nhãn dự đoán
+    target_columns = list(Lb.np.array('toxic', 'severe_toxic', 'obscene', 'threat',
+       'insult', 'identity_hate'))
 
-check.get_nonstop_token()
+    # Cài đặt app desktop
+    app = Ap.ToxicityPredictorApp(model, vectorizer, target_columns)
 
-check.most_common_toxic_words()
-
-check.preprocess()
-
-model = Md.MyModel()
-
-history = model.train_model(check.train, check.val)
-
-model.visualisation_train_model(history)
-
-evalution = model.evaluate_model(check.test)
-
-model.visualisation_evalution(evalution)
-
-prediction = model.predict(check.vectorizer, 'You freaking suck! I am going to hit you.')
-
-model.visualisation_prediction(prediction)
+    app.run()
