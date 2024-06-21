@@ -1,0 +1,43 @@
+#login-container {
+    padding-top: 100px;
+    position: static;
+    text-align: center;
+}
+
+#login-title {
+    margin-bottom: 20px;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#email {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#password{
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    background: lawngreen;
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}

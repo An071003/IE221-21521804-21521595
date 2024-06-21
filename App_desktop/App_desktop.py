@@ -1,6 +1,5 @@
 import Library.Library as Lb
 
-
 class ToxicityPredictorApp:
     """
         Class App desktop

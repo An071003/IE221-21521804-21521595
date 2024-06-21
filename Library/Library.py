@@ -14,7 +14,7 @@ import spacy
 # Thư viện để xử lý các vấn đề của học máy và xây dựng mô hình
 import tensorflow as tf
 from tensorflow.keras.layers import TextVectorization
-from tensorflow.keras.models import Sequential
+from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense, Embedding, Dropout, LSTM, Bidirectional
 import keras
 
@@ -27,9 +27,12 @@ import matplotlib.cm as cm
 # Thư viện lưu và tải mô hình TextVectorization
 import pickle as pkl
 
-# Thư viện tạo ra app_desktop
-import tkinter as tk
-from tkinter import messagebox
+# Thư viện tạo ra trang web demo
+from flask import Flask, render_template, request, redirect, url_for, session
+
+#Thư viện để lưu và tải dữ liệu
+import json
+import os
 
 class Vectorize(TextVectorization):
     """

@@ -1,7 +1,5 @@
 # Import Library
 import Library.Library as Lb
-
-
 class Data:
     """
         Class Data

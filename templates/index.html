@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài viết mẫu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="post">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+    </div>
+    <div class="comments">
+        <h3>Bình luận:</h3>
+        <div class="comment">
+            {% for comment in post.comments %}
+                <p class="comment-box"><strong id="username">{{ comment.username }}:</strong>
+                <div class="comment-content">{{ comment.comment }}</div></p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="comment-form">
+        <form action="/chat" method="post">
+            <input type="hidden" name="username" value="{{ username }}">
+            <textarea name="comment" placeholder="Thêm bình luận..." required></textarea>
+            <button type="submit">Gửi</button>
+        </form>
+    </div>
+    {% if warning %}
+        <script>
+            alert("{{ warning }}");
+        </script>
+    {% endif %}
+</body>
+</html>
