@@ -39,3 +39,16 @@ link: https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/dat
 ```python
   !python -m spacy download en_core_web_lg
 ```
+
+- Câu lệnh sử dụng ngrok:  
+```python
+  Run the following command to add your authtoken to the default ngrok.yml configuration file.
+
+  Copy code
+  ngrok config add-authtoken 2iBmmz0PHOtbOyWoDDWQw30ftLU_6pB4ztD4HMzvFpBEmidS3
+
+  Put your app online at ephemeral domain Forwarding to your upstream service. For example, if it is listening on port http://localhost:8080, run:
+
+  Copy code
+  ngrok http http://localhost:8080
+```

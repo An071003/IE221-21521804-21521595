@@ -1,14 +1,14 @@
-#login-container {
+#register-container {
     padding-top: 100px;
     position: static;
     text-align: center;
 }
 
-#login-title {
+#register-title {
     margin-bottom: 20px;
 }
 
-#login-form {
+#register-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,7 +25,7 @@
 }
 
 button {
-    background: lawngreen;
+    background: #007BFF;
     width: 100%;
     max-width: 300px;
     padding: 10px;

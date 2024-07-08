@@ -1,0 +1,24 @@
+{
+    "users": [
+        {
+            "email": "21521804@gm.uit.edu.vn",
+            "username": "Hồ Vũ An",
+            "password": "1"
+        },
+        {
+            "email": "21521595@gm.uit.edu.vn",
+            "username": "trung",
+            "password": "123"
+        },
+        {
+            "email": "pekkidjj123@gmail.com",
+            "username": "Sú",
+            "password": "1"
+        },
+        {
+            "email": "21521323@gm.uit.edu.vn",
+            "username": "DQ",
+            "password": "1"
+        }
+    ]
+}

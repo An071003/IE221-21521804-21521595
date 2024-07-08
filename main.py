@@ -61,7 +61,7 @@ def hash_password(password):
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    error = None  # Khởi tạo biến error với giá trị None
+    error = None
     if Lb.request.method == 'POST':
         email = Lb.request.form['email']
         password = Lb.request.form['password']
@@ -75,7 +75,7 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    error = None  # Khởi tạo biến error với giá trị None
+    error = None
     if Lb.request.method == 'POST':
         email = Lb.request.form['email']
         username = Lb.request.form['username']

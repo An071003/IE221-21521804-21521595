@@ -9,10 +9,10 @@
 <body>
     <div class="post">
         <h2>{{ post.title }}</h2>
-        <p>{{ post.content }}</p>
+        <p id="title-content">{{ post.content }}</p>
     </div>
     <div class="comments">
-        <h3>Bình luận:</h3>
+        <h3>Comment:</h3>
         <div class="comment">
             {% for comment in post.comments %}
                 <p class="comment-box"><strong id="username">{{ comment.username }}:</strong>
@@ -23,8 +23,8 @@
     <div class="comment-form">
         <form action="/chat" method="post">
             <input type="hidden" name="username" value="{{ username }}">
-            <textarea name="comment" placeholder="Thêm bình luận..." required></textarea>
-            <button type="submit">Gửi</button>
+            <textarea name="comment" placeholder="Add comment..." required></textarea>
+            <button type="submit">Send</button>
         </form>
     </div>
     {% if warning %}
@@ -34,3 +34,4 @@
     {% endif %}
 </body>
 </html>
+
