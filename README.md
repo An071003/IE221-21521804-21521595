@@ -32,13 +32,10 @@ link: https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/dat
   !pip install seaborn 
   !pip install matplotlib 
   !pip install numpy 
-<<<<<<< HEAD
   !pip install spacy
   !pip install flask
-=======
   !pip install spacy 
   !pip install tkinter
->>>>>>> c13e55488c93ae03711b2d9fd18b1f73c008b475
 ```  
 - Pagekage spacy english pipeline:  
 ```python
