@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
     Đây là module dùng để import đầy đủ các thư viện và tạo ra các class hàm cần thiết cho cả project
 """
@@ -137,5 +136,4 @@ class Vectorize(TextVectorization):
         :param path: đường dẫn lưu
         """
         with open(path, 'wb') as f:
->>>>>>> c13e55488c93ae03711b2d9fd18b1f73c008b475
             pkl.dump(self.get_vocabulary(), f)
