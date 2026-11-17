@@ -1,56 +1,86 @@
-# IE221-21521804-21521959
+# Toxic Comment Classifier
 
-Trường Đại học Công nghệ Thông tin - UIT  
-Đồ án môn kỹ thuật lập trình Python - IE221.O23.CNCL  
+Multi-label toxic comment detection with a Bidirectional LSTM, served through a Flask web app and a Tkinter desktop app.
 
+Course project for **IE221.O23.CNCL – Python Programming**, University of Information Technology (UIT, VNU-HCM).
 
-**#21521804 - Hồ Vũ An**  
-**#21521595 - Nguyễn Thành Trung**
+| Member | Student ID |
+|---|---|
+| Hồ Vũ An | 21521804 |
+| Nguyễn Thành Trung | 21521595 |
 
-# Giới thiệu:  
-Đồ án này nghiên cứu các thư viện liên quan đến học máy và ngôn ngữ tự nhiên và áp dụng chúng để tạo ra một ứng dụng desktop có thể cho phép người dùng nhập vào một đoạn bình luận, đưa ra kết quả dư đoán của mô hình học máy là bình luận tiêu cực hoặc không tiêu cực.  
+## Overview
 
-# Dataset:  
-− Tập dữ liệu mà nhóm chúng em quyết định sử dụng được lấy từ một số lượng lớn các bình luận trên Wikipedia đã dược đánh giá là có hành vi tiêu cực. Các loại tiêu cực đó là:  
- + toxic  
- + severe_toxic  
- + obscene  
- + threat  
- + insult  
- + identity_hate  
+The model reads an English comment and scores it on six toxicity labels: `toxic`, `severe_toxic`, `obscene`, `threat`, `insult`, `identity_hate`.
 
-− Mô tả tập tin csv: tập tin mà bọn em sẽ cung cấp để huấn luyện mô hình học máy train.csv (tập huấn luyện chứa các bình luận có nhãn nhị phân)  
-link: https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data
+- **Web app (Flask):** register / log in, then post comments under an article. A comment is blocked and the detected labels are shown when any score exceeds 0.5; otherwise it is published.
+- **Desktop app (Tkinter):** type a comment and see the six label scores as a bar chart.
 
-# Các Thư viện sử dụng:  
-- Thư viện python:
-```python
-  !pip install tensorflow 
-  !pip install tensorflow-intel
-  !pip install keras 
-  !pip install pandas 
-  !pip install seaborn 
-  !pip install matplotlib 
-  !pip install numpy 
-  !pip install spacy
-  !pip install flask
-  !pip install spacy 
-  !pip install tkinter
-```  
-- Pagekage spacy english pipeline:  
-```python
-  !python -m spacy download en_core_web_lg
+## Model
+
+| Item | Detail |
+|---|---|
+| Dataset | [Jigsaw Toxic Comment Classification Challenge](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data) (`train.csv`) |
+| Text vectorization | Keras `TextVectorization`, 20,000-token vocabulary, sequence length 1,800 |
+| Architecture | Embedding(32) → Bidirectional LSTM(32) → Dense 128 → 256 → 128 → Dropout(0.5) → Dense(6, sigmoid) |
+| Loss / optimizer | Binary cross-entropy / Adam |
+| Metrics | accuracy, precision, recall |
+
+Exploration, training and evaluation are in `Jupyter-notebook/jupyter_notebook.ipynb`. Pre-trained weights and the vocabulary are in `Save_model/`.
+
+## Project structure
+
+```text
+├── main.py                  # Flask web app (auth + comment moderation)
+├── App_desktop/             # Tkinter desktop app
+├── Model/Model.py           # BiLSTM model, training, evaluation, plots
+├── Data/Data.py             # Loading, analysis and preprocessing of the dataset
+├── Library/Library.py       # Shared imports and the Vectorize layer
+├── Train_save_model/        # Script that trains the model and saves the weights
+├── Save_model/              # model.weights.h5, vectorizer.pkl
+├── templates/, static/      # Web UI
+├── data.json                # Sample article and comments
+└── users.example.json       # Empty user store template
 ```
 
-- Câu lệnh sử dụng ngrok:  
-```python
-  Run the following command to add your authtoken to the default ngrok.yml configuration file.
+## Getting started
 
-  Copy code
-  ngrok config add-authtoken 2iBmmz0PHOtbOyWoDDWQw30ftLU_6pB4ztD4HMzvFpBEmidS3
+Requirements: Python 3.10+ (Tkinter is bundled with the standard Python installer).
 
-  Put your app online at ephemeral domain Forwarding to your upstream service. For example, if it is listening on port http://localhost:8080, run:
-
-  Copy code
-  ngrok http http://localhost:8080
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python -m spacy download en_core_web_lg
 ```
+
+### Run the web app
+
+```bash
+export SECRET_KEY="change-me"      # Windows PowerShell: $env:SECRET_KEY="change-me"
+python main.py
+```
+
+Open http://127.0.0.1:5000. `users.json` is created on the first registration. Set `FLASK_DEBUG=1` to enable debug mode during development.
+
+### Run the desktop app
+
+```bash
+python -m App_desktop.App_desktop
+```
+
+### Retrain the model
+
+1. Download `train.csv` from the Kaggle competition and place it at `jigsaw-toxic-comment-classification-challenge/train.csv/train.csv`.
+2. Run the training script from its own folder (paths are relative):
+
+```bash
+cd Train_save_model
+python Train_save_model.py
+```
+
+## Notes
+
+- `users.json`, datasets and local tools are git-ignored; the repository does not ship credentials or the Kaggle data.
+- Passwords are stored as SHA-256 hashes. This is acceptable for a course project, but a production system should use a salted, slow hash (bcrypt or argon2).
+- The model only supports English text.
