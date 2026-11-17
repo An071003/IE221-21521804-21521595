@@ -1,6 +1,7 @@
 import Library.Library as Lb
 import Model.Model as Md
 import hashlib
+import os
 
 # Tải Model
 model = Md.MyModel()
@@ -15,7 +16,7 @@ vectorizer = Lb.Vectorize(vocabulary=vocabulary)
 
 # Khởi tạo web
 app = Lb.Flask(__name__)
-app.secret_key = '123456789'
+app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))
 
 def load_data():
     """
@@ -39,6 +40,8 @@ def load_users():
     Hàm load thông tin người dùng
     @return: dữ liệu người dùng từ file JSON
     """
+    if not os.path.exists('users.json'):
+        return {'users': []}
     with open('users.json', 'r', encoding='utf-8') as f:
         users = Lb.json.load(f)
     return users
@@ -67,7 +70,7 @@ def login():
         password = Lb.request.form['password']
         users = load_users()
         for user in users['users']:
-            if user['email'] == email and user['password'] == password:
+            if user['email'] == email and user['password'] == hash_password(password):
                 Lb.session['username'] = user['username']
                 return Lb.redirect(Lb.url_for('index'))
         error = 'Invalid email or password'
@@ -88,7 +91,7 @@ def register():
             if user['username'] == username:
                 error = 'Username already exists'
                 return Lb.render_template('register.html', error=error)
-        users['users'].append({'email': email, 'username': username, 'password': password})
+        users['users'].append({'email': email, 'username': username, 'password': hash_password(password)})
         save_users(users)
         return Lb.redirect(Lb.url_for('login'))
     return Lb.render_template('register.html', error=error)
@@ -122,4 +125,4 @@ def index():
     return Lb.render_template('index.html', post=post, warning=warning, username=username)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=os.environ.get('FLASK_DEBUG') == '1')
