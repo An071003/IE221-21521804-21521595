@@ -21,7 +21,6 @@ import keras
 # Thư viện để trực quan hóa dữ liệu
 import matplotlib.pyplot as plt
 import seaborn as sns
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.cm as cm
 
 # Thư viện lưu và tải mô hình TextVectorization
@@ -32,8 +31,13 @@ import json
 from flask import Flask, render_template, request, redirect, url_for, session
 
 # Thư viện tạo ra app_desktop
-import tkinter as tk
-from tkinter import messagebox
+try:
+    import tkinter as tk
+    from tkinter import messagebox
+    from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+except ImportError:
+    # Headless servers (e.g. Docker) have no Tk; only the desktop app needs it
+    tk = messagebox = FigureCanvasTkAgg = None
 
 class Vectorize(TextVectorization):
     """

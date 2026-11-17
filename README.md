@@ -64,6 +64,15 @@ python main.py
 
 Open http://127.0.0.1:5000. `users.json` is created on the first registration. Set `FLASK_DEBUG=1` to enable debug mode during development.
 
+### Run with Docker
+
+```bash
+docker build -t toxic-comment-classifier .
+docker run -p 7860:7860 -e SECRET_KEY="change-me" toxic-comment-classifier
+```
+
+Open http://127.0.0.1:7860. The app uses a single gunicorn worker because TensorFlow is memory-heavy and sessions rely on one `SECRET_KEY`. It needs roughly 1 GB of RAM, so serverless hosts (Vercel, Netlify) are not suitable; use a container host such as Hugging Face Spaces (Docker), Render or Railway and set `SECRET_KEY` as an environment variable. User accounts are stored in `users.json` on the container filesystem and reset on every redeploy.
+
 ### Run the desktop app
 
 ```bash
