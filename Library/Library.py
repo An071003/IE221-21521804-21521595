@@ -26,6 +26,10 @@ import matplotlib.cm as cm
 
 # Thư viện lưu và tải mô hình TextVectorization
 import pickle as pkl
+import json
+
+# Thư viện tạo ra web app
+from flask import Flask, render_template, request, redirect, url_for, session
 
 # Thư viện tạo ra app_desktop
 import tkinter as tk

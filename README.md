@@ -26,7 +26,7 @@ The model reads an English comment and scores it on six toxicity labels: `toxic`
 | Loss / optimizer | Binary cross-entropy / Adam |
 | Metrics | accuracy, precision, recall |
 
-Exploration, training and evaluation are in `Jupyter-notebook/jupyter_notebook.ipynb`. Pre-trained weights and the vocabulary are in `Save_model/`.
+Exploration, training and evaluation are in `Jupyter-notebook/jupyter_notebook.ipynb`. Pre-trained weights and the vocabulary are in `Save_model/`. The weights were saved with Keras 2.15, so `MyModel.load_pretrained()` reads the h5 file directly instead of using `load_weights`, which keeps it working with Keras 3.
 
 ## Project structure
 
@@ -45,14 +45,15 @@ Exploration, training and evaluation are in `Jupyter-notebook/jupyter_notebook.i
 
 ## Getting started
 
-Requirements: Python 3.10+ (Tkinter is bundled with the standard Python installer).
+Requirements: Python 3.10–3.12 (tested on 3.12; Tkinter is bundled with the standard Python installer).
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python -m spacy download en_core_web_lg
 ```
+
+The spaCy model `en_core_web_lg` is only needed to retrain (`python -m spacy download en_core_web_lg`).
 
 ### Run the web app
 

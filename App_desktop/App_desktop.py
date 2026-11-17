@@ -88,7 +88,7 @@ if __name__ == '__main__':
 
     model = Md.MyModel()
     model.build((None, 1800))
-    model.load_weights('./Save_model/model.weights.h5')
+    model.load_pretrained('./Save_model/model.weights.h5')
 
     with open('./Save_model/vectorizer.pkl', 'rb') as f:
         vocabulary = Lb.pkl.load(f)

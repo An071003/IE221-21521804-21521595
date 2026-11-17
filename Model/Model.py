@@ -1,4 +1,5 @@
 # Import Library
+import h5py
 import Library.Library as Lb
 # Import Data
 import Data.Data as Dt
@@ -25,6 +26,28 @@ class MyModel(Lb.Sequential):
         # Lớp cuối cùng có 6 nơ-ron tương ứng 6 cột taget_column với hàm kich hoạt  là sigmoid
         self.add(Lb.Dense(6, activation='sigmoid', name="output_layer"))
 
+
+    def load_pretrained(self, path):
+        """
+        Hàm nạp trọng số đã lưu ở định dạng h5 của Keras 2.x (không phụ thuộc phiên bản Keras đang cài)
+        :param path: đường dẫn tới file trọng số
+        """
+        with h5py.File(path, 'r') as f:
+            def dense(name):
+                return [f[f'{name}/{name}/kernel:0'][()], f[f'{name}/{name}/bias:0'][()]]
+
+            def lstm(direction):
+                base = f'bidirectional/bidirectional/{direction}_lstm/lstm_cell'
+                return [f[f'{base}/kernel:0'][()], f[f'{base}/recurrent_kernel:0'][()], f[f'{base}/bias:0'][()]]
+
+            names = ['embedding', 'bidirectional', 'dense', 'dense_1', 'dense_2', 'dense_3']
+            weights = [
+                [f['embedding/embedding/embeddings:0'][()]],
+                lstm('forward') + lstm('backward'),
+                dense(names[2]), dense(names[3]), dense(names[4]), dense(names[5]),
+            ]
+        for layer, w in zip([l for l in self.layers if l.weights], weights):
+            layer.set_weights(w)
 
     def compile(self, loss='binary_crossentropy', optimizer='adam', metrics=['accuracy', 'precision', 'recall']):
         """
@@ -66,7 +89,7 @@ class MyModel(Lb.Sequential):
         :return: Kết quả dự đoán
         """
         check = vectorizer(text)
-        return super().predict(Lb.np.expand_dims(check, 0))
+        return super().predict(Lb.np.expand_dims(check, 0), verbose=0)
 
     def visualisation_prediction(self, target_columns, prediction):
         """
